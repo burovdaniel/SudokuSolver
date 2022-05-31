@@ -7,18 +7,22 @@ def Check_file():
         print("please provide the text file with the Sudoku puzzle")
         quit()
     else:
-        Parser()
+        pass
 
-#parses the input txt puzzle file
+#parses the input txt puzzle file into a 2d int 9x9 array
+#dosent check if input is correct(two same numbers in a line etc) currently
 def Parser():
-    with open(sys.argv[1],"r") as puzzle:
-        contents = puzzle.read()
+    #opens the input puzzle and saves as list of the string row
+    with open(sys.argv[1],"r") as content:
+        puzzle = content.readlines()
 
-    print(contents)
+    puzzle = [line.replace('\n','') for line in puzzle]#removing newline
 
+    #spliting the row string into lists of int to make 2d  9x9 size array
+    puzzle = [list(map(int,puzzle[i].split(" "))) for i in range(len(puzzle))]
 
-
-
+    return puzzle
 
 if __name__ == '__main__':
     Check_file()
+    Parser()
