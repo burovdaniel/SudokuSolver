@@ -10,3 +10,14 @@ Take an empty postion and check which numbers fit by checking the numbers in the
 
 need 9x9 array
 Need a way to input an array (maybe throug a txt file that checks) and then outputs the results in another txtfile
+lw
+
+need to to check if the puzzle input is correct 
+has numbers 1-9, has zeros, is 9x9 numbers,has no 2 same number in a line or 3x3 direction
+**will try to do later
+
+Parser - reads the input puzzle
+need as 9x9 matrix so [9][9] 2d array
+
+Need to also write the output need some thing thatcan display the given input
+

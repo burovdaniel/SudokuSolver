@@ -23,6 +23,15 @@ def Parser():
 
     return puzzle
 
+#Prints the puzzle in a readable format
+def Printer(puzzle : list):
+
+    for line in puzzle:
+        for number in line:
+            print(number,end=' ')#prints each number
+        print()#newline
+
 if __name__ == '__main__':
     Check_file()
-    Parser()
+    puzzle = Parser()
+    Printer(puzzle)
