@@ -31,7 +31,35 @@ def Printer(puzzle : list):
             print(number,end=' ')#prints each number
         print()#newline
 
+#Checks if the n number can be placed in xy postion
+def Possiable(y:int,x:int,n:int,puzzle:list):
+    #checks if number is in the row
+    for i in range(9):
+        if(puzzle[y][i] == n):
+            return False
+
+    #checks if number is the coloum
+    for i in range(9):
+        if(puzzle[i][x] == n):
+            return False
+
+    #getting the square the number is in
+    x0 = (x//3)*3
+    y0 = (y//3)*3
+
+    #checks if the number is in its 3x3 square
+    for i in range(3):
+        for j in range(3):
+            if(puzzle[i+y0][j+x0] == n):
+                return False
+
+    #if all checks fail return True
+    return True
+
 if __name__ == '__main__':
+    #puzzle[y][x]
     Check_file()
     puzzle = Parser()
-    Printer(puzzle)
+    #Printer(puzzle)
+    print(Possiable(0,0,4,puzzle))
+
