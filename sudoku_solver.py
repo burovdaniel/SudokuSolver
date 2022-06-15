@@ -1,68 +1,77 @@
+'''' Solves sudoku Problems
+'''
 import sys
 import re
 
-#check if file in command argumment is correct and is a txt file
-def Check_file():
-    if len(sys.argv) != 2 or re.search(".txt$",sys.argv[1]) is None:#if correct command length and is txt file
+def check_file():
+    ''' Checks if command is correct
+        and that is tct file
+    '''
+    if len(sys.argv) != 2 or re.search(".txt$", sys.argv[1]) is None:
         print("please provide the text file with the Sudoku puzzle")
-        quit()
+        sys.exit()
     else:
         pass
 
-#parses the input txt puzzle file into a 2d int 9x9 array
-#dosent check if input is correct(two same numbers in a line etc) currently
-def Parser():
+def parser():
+    ''' Parses the input txt puzzle into an int 2s 9x9 array
+        returns the parsed puzzle as a global
+        *it assumes given a 9x9 grid
+    '''
     global puzzle
     global finished
     #opens the input puzzle and saves as list of the string row
-    with open(sys.argv[1],"r") as content:
+    with open(sys.argv[1], "r") as content:
         puzzle = content.readlines()
 
-    puzzle = [line.replace('\n','') for line in puzzle]#removing newline
+    puzzle = [line.replace('\n', '') for line in puzzle]#removing newline
 
     #spliting the row string into lists of int to make 2d  9x9 size array
-    puzzle = [list(map(int,puzzle[i].split(" "))) for i in range(len(puzzle))]
+    puzzle = [list(map(int, puzzle[i].split(" "))) for i in range(len(puzzle))]
 
     finished = False
     return puzzle
 
-#Prints the puzzle in a readable format
-def Printer():
+def printer():
+    ''' prints the puzzle in a readable format
+    '''
     global puzzle
     for line in puzzle:
         for number in line:
-            print(number,end=' ')#prints each number
-        print()#newline
+            print(number, end=' ')#prints each number
+        print()
 
-#Checks if the n number can be placed in xy postion
-def Possiable(y:int,x:int,n:int):
+def possiable(y: int, x: int, n: int):
+    ''' checks if the given number n can fit in given x,y postion
+    '''
     global puzzle
 
     #checks if number is in the row
     for i in range(9):
-        if(puzzle[y][i] == n):
+        if puzzle[y][i] == n:
             return False
 
     #checks if number is the coloum
     for i in range(9):
-        if(puzzle[i][x] == n):
+        if puzzle[i][x] == n:
             return False
 
     #getting the square the number is in
-    x0 = (x//3)*3
-    y0 = (y//3)*3
+    x_0 = (x//3)*3
+    y_0 = (y//3)*3
 
     #checks if the number is in its 3x3 square
     for i in range(3):
         for j in range(3):
-            if(puzzle[i+y0][j+x0] == n):
+            if puzzle[i+y_0][j+x_0] == n:
                 return False
 
     #if all checks fail return True
     return True
 
-#returns what numbers is possiable for a given postion
-def Solve():
+def solve():
+    ''' solves the puzzle using backtracking
+    '''
     global puzzle
     global finished
 
@@ -70,18 +79,18 @@ def Solve():
     for y in range(9):
         for x in range(9):
             #checks if it is on last square
-            if(y == 8 and x ==8):
+            if(y == 8 and x == 8):
                 finished = True
 
             #checks if empty
             if puzzle[y][x] == 0:
                 #checks 1st possiable number and places it if can
-                for n in range(1,10):
-                    if Possiable(y,x,n):
+                for n in range(1, 10):
+                    if possiable(y, x, n):
                         puzzle[y][x] = n
 
                         #repeat
-                        Solve()
+                        solve()
 
                         #if not finished and needs to backtrack
                         if not finished:
@@ -90,8 +99,7 @@ def Solve():
                 return
 
 if __name__ == '__main__':
-    #puzzle[y][x]
-    Check_file()
-    Parser()
-    Solve()
-    Printer()
+    check_file()
+    parser()
+    solve()
+    printer()
