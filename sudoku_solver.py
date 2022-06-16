@@ -1,4 +1,4 @@
-'''' Solves sudoku Problems
+'''' Solves sudoku Problems given in txt formant as a command line argument
 '''
 import sys
 import re
@@ -18,8 +18,6 @@ def parser():
         returns the parsed puzzle as a global
         *it assumes given a 9x9 grid
     '''
-    global puzzle
-    global finished
     #opens the input puzzle and saves as list of the string row
     with open(sys.argv[1], "r") as content:
         puzzle = content.readlines()
@@ -29,23 +27,19 @@ def parser():
     #spliting the row string into lists of int to make 2d  9x9 size array
     puzzle = [list(map(int, puzzle[i].split(" "))) for i in range(len(puzzle))]
 
-    finished = False
     return puzzle
 
-def printer():
+def printer(puzzle: list):
     ''' prints the puzzle in a readable format
     '''
-    global puzzle
     for line in puzzle:
         for number in line:
             print(number, end=' ')#prints each number
         print()
 
-def possiable(y: int, x: int, n: int):
+def possiable(y: int, x: int, n: int, puzzle: list):
     ''' checks if the given number n can fit in given x,y postion
     '''
-    global puzzle
-
     #checks if number is in the row
     for i in range(9):
         if puzzle[y][i] == n:
@@ -69,37 +63,49 @@ def possiable(y: int, x: int, n: int):
     #if all checks fail return True
     return True
 
-def solve():
-    ''' solves the puzzle using backtracking
+def finished(puzzle: list):
+    ''' checks if the puzzle is finished
     '''
-    global puzzle
-    global finished
+    #looks through each postion
+    for y in range(9):
+        for x in range(9):
+
+            #checks if empty
+            if puzzle[x][y] == 0:
+                return False
+
+    return True
+
+def solve(puzzle: list):
+    ''' solves the puzzle
+        using backtracking
+    '''
 
     #looks through each postion
     for y in range(9):
         for x in range(9):
-            #checks if it is on last square
-            if(y == 8 and x == 8):
-                finished = True
 
             #checks if empty
             if puzzle[y][x] == 0:
+
                 #checks 1st possiable number and places it if can
                 for n in range(1, 10):
-                    if possiable(y, x, n):
+                    if possiable(y, x, n, puzzle):
                         puzzle[y][x] = n
 
                         #repeat
-                        solve()
+                        solve(puzzle)
 
                         #if not finished and needs to backtrack
-                        if not finished:
+                        if not finished(puzzle):
                             puzzle[y][x] = 0
 
-                return
+                return puzzle
+
+    return puzzle
 
 if __name__ == '__main__':
     check_file()
-    parser()
-    solve()
-    printer()
+    PUZZLE = parser()
+    PUZZLE = solve(PUZZLE)
+    printer(PUZZLE)
