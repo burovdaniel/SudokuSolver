@@ -5,13 +5,15 @@ import re
 
 def check_file():
     ''' Checks if command is correct
-        and that is tct file
+        and that is txt file
     '''
-    if len(sys.argv) != 2 or re.search(".txt$", sys.argv[1]) is None:
-        print("please provide the text file with the Sudoku puzzle")
-        sys.exit()
-    else:
-        pass
+    #raises error if to many arguments
+    if len(sys.argv) != 2:
+        raise Exception("Please check your Command, To many arguments provieded")
+
+    #raises error if not .txt file
+    if re.search(".txt$", sys.argv[1]) is None:
+        raise Exception("Please provide a .txt file")
 
 def parser():
     ''' Parses the input txt puzzle into an int 2s 9x9 array
@@ -80,7 +82,6 @@ def solve(puzzle: list):
     ''' solves the puzzle
         using backtracking
     '''
-
     #looks through each postion
     for y in range(9):
         for x in range(9):
@@ -109,3 +110,4 @@ if __name__ == '__main__':
     PUZZLE = parser()
     PUZZLE = solve(PUZZLE)
     printer(PUZZLE)
+
